@@ -10,7 +10,9 @@
     "build": "graph build subgraph.yaml",
     "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pancakeswap/exchange subgraph.yaml",
     "deploy-local": "graph deploy exchange --ipfs http://127.0.0.1:5001 --node http://127.0.0.1:8020",
-    "create-local": "graph create exchange --node http://127.0.0.1:8020"
+    "create-local": "graph create exchange --node http://127.0.0.1:8020",
+    "test": "npm run deploy-local && jest --runInBand --forceExit",
+    "test:watch": "npm run test -- --watch"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
