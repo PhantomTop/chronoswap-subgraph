@@ -1,5 +1,6 @@
 #!/bin/sh
 #cd /root/cronos/bin
+systemctl stop cronosd.service
 cronosd unsafe-reset-all
 rm ~/.cronos/config/genesis.json
 cronosd init chronoswap-asia-1 --chain-id cronosmainnet_25-1
