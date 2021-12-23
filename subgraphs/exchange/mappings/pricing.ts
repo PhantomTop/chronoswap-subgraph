@@ -30,15 +30,26 @@ export function getBnbPriceInUSD(): BigDecimal {
   }
 }
 
+// // token where amounts should contribute to tracked volume and liquidity
+// let WHITELIST: string[] = [
+//   "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", // WBNB
+//   "0xe9e7cea3dedca5984780bafc599bd69add087d56", // BUSD
+//   "0x55d398326f99059ff775485246999027b3197955", // USDT
+//   "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", // USDC
+//   "0x23396cf899ca06c4472205fc903bdb4de249d6fc", // UST
+//   "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c", // BTCB
+//   "0x2170ed0880ac9a755fd29b2688956bd959f933f8", // WETH
+// ];
+
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", // WBNB
-  "0xe9e7cea3dedca5984780bafc599bd69add087d56", // BUSD
-  "0x55d398326f99059ff775485246999027b3197955", // USDT
-  "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", // USDC
-  "0x23396cf899ca06c4472205fc903bdb4de249d6fc", // UST
-  "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c", // BTCB
-  "0x2170ed0880ac9a755fd29b2688956bd959f933f8", // WETH
+  "0xca2503482e5D6D762b524978f400f03E38d5F962", // WCRO
+  "0x322e21dcAcE43d319646756656b29976291d7C76", // CNO
+  "0x89610846daDaB76A8b5b2dB0a4D33d743Bce4D43", // CHRONOBAR
+  // "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", // USDC
+  // "0x23396cf899ca06c4472205fc903bdb4de249d6fc", // UST
+  // "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c", // BTCB
+  // "0x2170ed0880ac9a755fd29b2688956bd959f933f8", // WETH
 ];
 
 // minimum liquidity for price to get tracked
