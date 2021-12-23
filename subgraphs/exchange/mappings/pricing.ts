@@ -69,9 +69,9 @@ let MINIMUM_LIQUIDITY_THRESHOLD_BNB = BigDecimal.fromString("10");
  * @todo update to be derived BNB (add stablecoin estimates)
  **/
 export function findBnbPerToken(token: Token): BigDecimal {
-  if (token.id == CNO_ADDRESS) {
+  //if (token.id == CNO_ADDRESS) {
     return ONE_BD;
-  }
+  //}
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
     let pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
