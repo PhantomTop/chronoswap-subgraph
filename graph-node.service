@@ -14,7 +14,7 @@ After=network.target
 
 Type=simple
 
-User=ubuntu
+User=debian
 
 WorkingDirectory=/usr/local/bin
 
