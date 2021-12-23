@@ -8,26 +8,26 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
-let BUSD_WBNB_PAIR = "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16"; // created block 589414
-let USDT_WBNB_PAIR = "0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae"; // created block 648115
+let CNO_ADDRESS = "0x322e21dcAcE43d319646756656b29976291d7C76";
+let USDC_CNO_PAIR = "0x50af1c38af0481c9d06f72a045274201781773ae"; // created block 589414
+let USDT_CNO_PAIR = "0x07d47d97b717c6cfdb23b434273e51ac05ebb46a"; // created block 648115
 
 export function getBnbPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
-  let usdtPair = Pair.load(USDT_WBNB_PAIR); // usdt is token0
-  let busdPair = Pair.load(BUSD_WBNB_PAIR); // busd is token1
+  let usdtPair = Pair.load(USDT_CNO_PAIR); // usdt is token0
+  let usdcPair = Pair.load(USDC_CNO_PAIR); // usdc is token1
 
-  if (busdPair !== null && usdtPair !== null) {
-    let totalLiquidityBNB = busdPair.reserve0.plus(usdtPair.reserve1);
+  if (usdcPair !== null && usdtPair !== null) {
+    let totalLiquidityBNB = usdcPair.reserve0.plus(usdtPair.reserve1);
     if (totalLiquidityBNB.notEqual(ZERO_BD)) {
-      let busdWeight = busdPair.reserve0.div(totalLiquidityBNB);
+      let usdcWeight = usdcPair.reserve0.div(totalLiquidityBNB);
       let usdtWeight = usdtPair.reserve1.div(totalLiquidityBNB);
-      return busdPair.token1Price.times(busdWeight).plus(usdtPair.token0Price.times(usdtWeight));
+      return usdcPair.token1Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight));
     } else {
       return ZERO_BD;
     }
-  } else if (busdPair !== null) {
-    return busdPair.token1Price;
+  } else if (usdcPair !== null) {
+    return usdcPair.token1Price;
   } else if (usdtPair !== null) {
     return usdtPair.token0Price;
   } else {
@@ -37,7 +37,7 @@ export function getBnbPriceInUSD(): BigDecimal {
 
 // // token where amounts should contribute to tracked volume and liquidity
 // let WHITELIST: string[] = [
-//   "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", // WBNB
+//   "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", // WCRO
 //   "0xe9e7cea3dedca5984780bafc599bd69add087d56", // BUSD
 //   "0x55d398326f99059ff775485246999027b3197955", // USDT
 //   "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", // USDC
@@ -55,10 +55,10 @@ let WHITELIST: string[] = [
   "0x66e428c3f67a68878562e79A0234c1F83c208770", // USDT
   "0xbED48612BC69fA1CaB67052b42a95FB30C1bcFee", // SHIB
   "0xe44Fd7fCb2b1581822D0c862B68222998a0c299a", // WETH
-  "0x062E66477Faf219F25D27dCED647BF57C3107d52", //WBTC
-  "0xF2001B145b43032AAF5Ee2884e456CCd805F677D", //DAI
-  "0xB888d8Dd1733d72681b30c00ee76BDE93ae7aa93", //ATOM
-  "0x1a8E39ae59e5556B56b76fCBA98d22c9ae557396" //DOGE
+  "0x062E66477Faf219F25D27dCED647BF57C3107d52", // WBTC
+  "0xF2001B145b43032AAF5Ee2884e456CCd805F677D", // DAI
+  "0xB888d8Dd1733d72681b30c00ee76BDE93ae7aa93", // ATOM
+  "0x1a8E39ae59e5556B56b76fCBA98d22c9ae557396" // DOGE
 ];
 
 // minimum liquidity for price to get tracked
@@ -69,14 +69,12 @@ let MINIMUM_LIQUIDITY_THRESHOLD_BNB = BigDecimal.fromString("10");
  * @todo update to be derived BNB (add stablecoin estimates)
  **/
 export function findBnbPerToken(token: Token): BigDecimal {
-  if (token.id == WBNB_ADDRESS) {
+  if (token.id == CNO_ADDRESS) {
     return ONE_BD;
   }
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
-    ethereum.CallResult<Address> callResult = factoryContract.try_getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
-    let pairAddress = callResult.value();
-    //let pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
+    let pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
     if (pairAddress.toHex() != ADDRESS_ZERO) {
       let pair = Pair.load(pairAddress.toHex());
       if (pair.token0 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
