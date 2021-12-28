@@ -51,5 +51,9 @@
       "json",
       "node"
     ]
+  },
+  "dependencies": {
+    "jest": "^27.4.5",
+    "ts-jest": "^27.1.2"
   }
 }
