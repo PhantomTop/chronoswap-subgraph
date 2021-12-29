@@ -18,7 +18,6 @@ User=root
 
 WorkingDirectory=/usr/local/bin
 
-#ExecStart=/usr/local/bin/graph-node --postgres-url postgresql://postgres:daniel@localhost:5432/graphnodedb --ethereum-rpc mainnet:http://127.0.0.1:8545 --ipfs 127.0.0.1:5001 --http-port 80
 ExecStart=/usr/local/bin/graph-node --postgres-url postgresql://postgres:daniel@localhost:5432/graphnodedb --ethereum-rpc mainnet:https://cronos-rpc.elk.finance --ipfs http://127.0.0.1:5001 --http-port 80
 Restart=on-failure
 
