@@ -79,7 +79,8 @@ export function findBnbPerToken(token: Token): BigDecimal {
 
       log.info('Pair Exists : {} reserveBNB : {}\n', [pairAddress.toHex(), pair.reserveBNB.toString()]);
       
-      if (pair.token0 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
+      //if (pair.token0 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
+      if (pair.token0 == token.id) {
         let token1 = Token.load(pair.token1);
         
         log.info("Token price : {} * {} = {}\n", 
@@ -87,7 +88,8 @@ export function findBnbPerToken(token: Token): BigDecimal {
         
         return pair.token1Price.times(token1.derivedBNB as BigDecimal); // return token1 per our token * BNB per token 1
       }
-      if (pair.token1 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
+      //if (pair.token1 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
+      if (pair.token1 == token.id) {
         let token0 = Token.load(pair.token0);
         
         log.info("Token price : {} * {} = {}\n", 
