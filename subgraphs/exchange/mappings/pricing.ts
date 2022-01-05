@@ -72,18 +72,18 @@ export function findBnbPerToken(token: Token): BigDecimal {
   for (let i = 0; i < WHITELIST.length; ++i) {
     let pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
 
-    log.info('Check pair exists between {} -> {}\n', [Address.fromString(token.id), Address.fromString(WHITELIST[i])]);
+    log.info('Check pair exists between {} -> {}\n', [token.id, WHITELIST[i]]);
     
     if (pairAddress.toHex() != ADDRESS_ZERO) {
       let pair = Pair.load(pairAddress.toHex());
 
-      log.info('Pair Exists : {} reserveBNB : {}\n', [pairAddress.toHex(), pair.reserveBNB]);
+      log.info('Pair Exists : {} reserveBNB : {}\n', [pairAddress.toHex(), pair.reserveBNB.toString()]);
       
       if (pair.token0 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
         let token1 = Token.load(pair.token1);
         
         log.info("Token price : {} * {} = {}\n", 
-        [pair.token1Price, token1.derivedBNB, pair.token1Price.times(token1.derivedBNB as BigDecimal)]);
+        [pair.token1Price.toString(), token1.derivedBNB.toString(), pair.token1Price.times(token1.derivedBNB as BigDecimal).toString()]);
         
         return pair.token1Price.times(token1.derivedBNB as BigDecimal); // return token1 per our token * BNB per token 1
       }
@@ -91,7 +91,7 @@ export function findBnbPerToken(token: Token): BigDecimal {
         let token0 = Token.load(pair.token0);
         
         log.info("Token price : {} * {} = {}\n", 
-        [pair.token0Price, token0.derivedBNB, pair.token0Price.times(token0.derivedBNB as BigDecimal)]);
+        [pair.token0Price.toString(), token0.derivedBNB.toString(), pair.token0Price.times(token0.derivedBNB as BigDecimal).toString()]);
         
         return pair.token0Price.times(token0.derivedBNB as BigDecimal); // return token0 per our token * BNB per token 0
       }
