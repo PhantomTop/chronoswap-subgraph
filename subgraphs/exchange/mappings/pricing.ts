@@ -2,10 +2,9 @@
 import { BigDecimal, Address } from "@graphprotocol/graph-ts/index";
 import { Pair, Token, Bundle } from "../generated/schema";
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from "./utils";
-
 import {
   ethereum,
-  BigInt
+  BigInt, log
 } from "@graphprotocol/graph-ts";
 
 let CNO_ADDRESS = "0x322e21dcAcE43d319646756656b29976291d7C76";
@@ -72,18 +71,28 @@ export function findBnbPerToken(token: Token): BigDecimal {
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
     let pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
-    console.log(Address.fromString(token.id) + "->" + Address.fromString(WHITELIST[i]));
+
+    log.info('Check pair exists between {} -> {}\n', [Address.fromString(token.id), Address.fromString(WHITELIST[i])]);
+    
     if (pairAddress.toHex() != ADDRESS_ZERO) {
       let pair = Pair.load(pairAddress.toHex());
-      console.log("Pair Exists : " + pairAddress.toHex());
+
+      log.info('Pair Exists : {}\n', [pairAddress.toHex()]);
+      
       if (pair.token0 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
         let token1 = Token.load(pair.token1);
-        console.log(pair.token1Price + " * " + token1.derivedBNB);
+        
+        log.info("Token price : {} * {} = {}\n", 
+        [pair.token1Price, token1.derivedBNB, pair.token1Price.times(token1.derivedBNB as BigDecimal)]);
+        
         return pair.token1Price.times(token1.derivedBNB as BigDecimal); // return token1 per our token * BNB per token 1
       }
       if (pair.token1 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
         let token0 = Token.load(pair.token0);
-        console.log(pair.token0Price + " * " + token0.derivedBNB);
+        
+        log.info("Token price : {} * {} = {}\n", 
+        [pair.token0Price, token0.derivedBNB, pair.token0Price.times(token0.derivedBNB as BigDecimal)]);
+        
         return pair.token0Price.times(token0.derivedBNB as BigDecimal); // return token0 per our token * BNB per token 0
       }
     }
