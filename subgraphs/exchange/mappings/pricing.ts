@@ -10,26 +10,26 @@ import {
 
 let CNO_ADDRESS = "0x322e21dcAcE43d319646756656b29976291d7C76";
 let USDC_CNO_PAIR = "0x50af1c38af0481c9d06f72a045274201781773ae"; // created block 589414
-let USDT_CNO_PAIR = "0x07d47d97b717c6cfdb23b434273e51ac05ebb46a"; // created block 648115
+let BUSD_CNO_PAIR = "0xbed3b43742dc04cd69b35b8ffba7024e31cff54a"; // created block 648115
 
 export function getBnbPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
-  let usdtPair = Pair.load(USDT_CNO_PAIR); // usdt is token0
+  let busdPair = Pair.load(BUSD_CNO_PAIR); // busd is token0
   let usdcPair = Pair.load(USDC_CNO_PAIR); // usdc is token1
 
-  if (usdcPair !== null && usdtPair !== null) {
-    let totalLiquidityBNB = usdcPair.reserve0.plus(usdtPair.reserve1);
+  if (usdcPair !== null && busdPair !== null) {
+    let totalLiquidityBNB = usdcPair.reserve0.plus(busdPair.reserve1);
     if (totalLiquidityBNB.notEqual(ZERO_BD)) {
       let usdcWeight = usdcPair.reserve0.div(totalLiquidityBNB);
-      let usdtWeight = usdtPair.reserve1.div(totalLiquidityBNB);
-      return usdcPair.token1Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight));
+      let busdWeight = busdPair.reserve1.div(totalLiquidityBNB);
+      return usdcPair.token1Price.times(usdcWeight).plus(busdPair.token0Price.times(busdWeight));
     } else {
       return ZERO_BD;
     }
   } else if (usdcPair !== null) {
     return usdcPair.token1Price;
-  } else if (usdtPair !== null) {
-    return usdtPair.token0Price;
+  } else if (busdPair !== null) {
+    return busdPair.token0Price;
   } else {
     return ZERO_BD;
   }
@@ -53,6 +53,7 @@ let WHITELIST: string[] = [
   "0x25f0965F285F03d6F6B3B21c8EC3367412Fd0ef6", // CHRONOBAR
   "0xc21223249CA28397B4B6541dfFaEcC539BfF0c59", // USDC
   "0x66e428c3f67a68878562e79A0234c1F83c208770", // USDT
+  "0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8", // BUSD
   "0xbED48612BC69fA1CaB67052b42a95FB30C1bcFee", // SHIB
   "0xe44Fd7fCb2b1581822D0c862B68222998a0c299a", // WETH
   "0x062E66477Faf219F25D27dCED647BF57C3107d52", // WBTC
