@@ -1,5 +1,6 @@
 /* eslint-disable prefer-const */
 import { BigInt, BigDecimal, store } from "@graphprotocol/graph-ts";
+
 import {
   Pair,
   Token,
@@ -13,7 +14,7 @@ import {
 import { Mint, Burn, Swap, Transfer, Sync } from "../generated/templates/Pair/Pair";
 import { updatePairDayData, updateTokenDayData, updatePancakeDayData, updatePairHourData } from "./dayUpdates";
 import { getBnbPriceInUSD, findBnbPerToken, getTrackedVolumeUSD, getTrackedLiquidityUSD } from "./pricing";
-import { convertTokenToDecimal, ADDRESS_ZERO, FACTORY_ADDRESS, ONE_BI, ZERO_BD, BI_18 } from "./utils";
+import { convertTokenToDecimal, ADDRESS_ZERO, FACTORY_ADDRESS, ONE_BI, ONE_BD, ZERO_BD, BI_18 } from "./utils";
 
 function isCompleteMint(mintId: string): boolean {
   return MintEvent.load(mintId).sender !== null; // sufficient checks
@@ -183,7 +184,7 @@ export function handleSync(event: Sync): void {
   else pair.token1Price = ZERO_BD;
 
   let bundle = Bundle.load("1");
-  bundle.bnbPrice = 1;
+  bundle.bnbPrice = ONE_BD;
   bundle.save();
 
   let t0DerivedBNB = findBnbPerToken(token0 as Token);
