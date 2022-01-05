@@ -27,6 +27,10 @@ export function getBnbPriceInUSD(): BigDecimal {
     if (totalLiquidityBNB.notEqual(ZERO_BD)) {
       let usdcWeight = usdcPair.reserve0.div(totalLiquidityBNB);
       let usdtWeight = usdtPair.reserve1.div(totalLiquidityBNB);
+
+      log.info('---------------usdcPair.token1Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight)\n', 
+      [usdcPair.token1Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight).toString()]);
+
       return usdcPair.token1Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight));
     } else {
       return ZERO_BD;

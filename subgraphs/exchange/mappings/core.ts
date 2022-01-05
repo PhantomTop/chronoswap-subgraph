@@ -184,7 +184,6 @@ export function handleSync(event: Sync): void {
 
   let bundle = Bundle.load("1");
   bundle.bnbPrice = getBnbPriceInUSD();
-  log.info('==============BNBPrice {}================\n', [bundle.bnbPrice.toString()]);
   bundle.save();
 
   let t0DerivedBNB = findBnbPerToken(token0 as Token);
