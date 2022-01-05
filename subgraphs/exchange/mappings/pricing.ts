@@ -9,27 +9,27 @@ import {
 } from "@graphprotocol/graph-ts";
 
 let CNO_ADDRESS = "0x322e21dcAcE43d319646756656b29976291d7C76";
-let USDC_CNO_PAIR = "0x50af1c38af0481c9d06f72a045274201781773ae"; // created block 589414
-let BUSD_CNO_PAIR = "0xbed3b43742dc04cd69b35b8ffba7024e31cff54a"; // created block 648115
+let USDC_CNO_PAIR = "0x50af1c38af0481c9d06f72a045274201781773ae";
+let USDT_CNO_PAIR = "0x07d47d97b717c6cfdb23b434273e51ac05ebb46a";
 
 export function getBnbPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
-  let busdPair = Pair.load(BUSD_CNO_PAIR); // busd is token0
+  let usdtPair = Pair.load(USDT_CNO_PAIR); // usdt is token0
   let usdcPair = Pair.load(USDC_CNO_PAIR); // usdc is token1
 
-  if (usdcPair !== null && busdPair !== null) {
-    let totalLiquidityBNB = usdcPair.reserve0.plus(busdPair.reserve1);
+  if (usdcPair !== null && usdtPair !== null) {
+    let totalLiquidityBNB = usdcPair.reserve0.plus(usdtPair.reserve1);
     if (totalLiquidityBNB.notEqual(ZERO_BD)) {
       let usdcWeight = usdcPair.reserve0.div(totalLiquidityBNB);
-      let busdWeight = busdPair.reserve1.div(totalLiquidityBNB);
-      return usdcPair.token1Price.times(usdcWeight).plus(busdPair.token0Price.times(busdWeight));
+      let usdtWeight = usdtPair.reserve1.div(totalLiquidityBNB);
+      return usdcPair.token1Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight));
     } else {
       return ZERO_BD;
     }
   } else if (usdcPair !== null) {
     return usdcPair.token1Price;
-  } else if (busdPair !== null) {
-    return busdPair.token0Price;
+  } else if (usdtPair !== null) {
+    return usdtPair.token0Price;
   } else {
     return ZERO_BD;
   }
@@ -48,16 +48,12 @@ export function getBnbPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  "0x5C7F8A570d578ED84E63fdFA7b1eE72dEae1AE23", // WCRO
+  "0xca2503482e5D6D762b524978f400f03E38d5F962", // WCRO
   "0x322e21dcAcE43d319646756656b29976291d7C76", // CNO
-  "0x25f0965F285F03d6F6B3B21c8EC3367412Fd0ef6", // CHRONOBAR
+  "0x89610846daDaB76A8b5b2dB0a4D33d743Bce4D43", // CHRONOBAR
+  "0xF2001B145b43032AAF5Ee2884e456CCd805F677D", // DAI
   "0xc21223249CA28397B4B6541dfFaEcC539BfF0c59", // USDC
   "0x66e428c3f67a68878562e79A0234c1F83c208770", // USDT
-  "0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8", // BUSD
-  "0xbED48612BC69fA1CaB67052b42a95FB30C1bcFee", // SHIB
-  "0xe44Fd7fCb2b1581822D0c862B68222998a0c299a", // WETH
-  "0x062E66477Faf219F25D27dCED647BF57C3107d52", // WBTC
-  "0xF2001B145b43032AAF5Ee2884e456CCd805F677D", // DAI
   "0xB888d8Dd1733d72681b30c00ee76BDE93ae7aa93", // ATOM
   "0x1a8E39ae59e5556B56b76fCBA98d22c9ae557396" // DOGE
 ];
@@ -76,14 +72,18 @@ export function findBnbPerToken(token: Token): BigDecimal {
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
     let pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
+    console.log(Address.fromString(token.id) + "->" + Address.fromString(WHITELIST[i]));
     if (pairAddress.toHex() != ADDRESS_ZERO) {
       let pair = Pair.load(pairAddress.toHex());
+      console.log("Pair Exists : " + pairAddress.toHex());
       if (pair.token0 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
         let token1 = Token.load(pair.token1);
+        console.log(pair.token1Price + " * " + token1.derivedBNB);
         return pair.token1Price.times(token1.derivedBNB as BigDecimal); // return token1 per our token * BNB per token 1
       }
       if (pair.token1 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
         let token0 = Token.load(pair.token0);
+        console.log(pair.token0Price + " * " + token0.derivedBNB);
         return pair.token0Price.times(token0.derivedBNB as BigDecimal); // return token0 per our token * BNB per token 0
       }
     }
