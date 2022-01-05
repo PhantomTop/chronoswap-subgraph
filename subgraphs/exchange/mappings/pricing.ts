@@ -77,7 +77,7 @@ export function findBnbPerToken(token: Token): BigDecimal {
     if (pairAddress.toHex() != ADDRESS_ZERO) {
       let pair = Pair.load(pairAddress.toHex());
 
-      log.info('Pair Exists : {}\n', [pairAddress.toHex()]);
+      log.info('Pair Exists : {} reserveBNB : {}\n', [pairAddress.toHex(), pair.reserveBNB]);
       
       if (pair.token0 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
         let token1 = Token.load(pair.token1);
