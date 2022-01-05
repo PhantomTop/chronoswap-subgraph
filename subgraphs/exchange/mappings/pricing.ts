@@ -16,10 +16,10 @@ export function getBnbPriceInUSD(): BigDecimal {
   let usdtPair = Pair.load(USDT_CNO_PAIR); // usdt is token0
   let usdcPair = Pair.load(USDC_CNO_PAIR); // usdc is token1
 
-  log.info('---------------usdtPair {} : {}\n', 
-    [usdtPair.reserve0.toString(), usdtPair.reserve1.toString()]);
-  log.info('---------------usdcPair {} : {}\n', 
-    [usdcPair.reserve0.toString(), usdcPair.reserve1.toString()]);
+  // log.info('---------------usdtPair {} : {}\n', 
+  //   [usdtPair.reserve0.toString(), usdtPair.reserve1.toString()]);
+  // log.info('---------------usdcPair {} : {}\n', 
+  //   [usdcPair.reserve0.toString(), usdcPair.reserve1.toString()]);
 
   if (usdcPair !== null && usdtPair !== null) {
     
