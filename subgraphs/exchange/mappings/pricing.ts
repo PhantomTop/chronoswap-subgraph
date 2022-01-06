@@ -7,7 +7,7 @@ import {
   BigInt, log
 } from "@graphprotocol/graph-ts";
 
-let CNO_ADDRESS = "0x322e21dcAcE43d319646756656b29976291d7C76";
+let CNO_ADDRESS = "0x322e21dcace43d319646756656b29976291d7c76";
 let USDC_CNO_PAIR = "0x50af1c38af0481c9d06f72a045274201781773ae";
 let USDT_CNO_PAIR = "0x07d47d97b717c6cfdb23b434273e51ac05ebb46a";
 
@@ -57,7 +57,7 @@ export function getBnbPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  "0x322e21dcAcE43d319646756656b29976291d7C76", // CNO
+  "0x322e21dcace43d319646756656b29976291d7c76", // CNO
   "0xca2503482e5D6D762b524978f400f03E38d5F962", // WCRO
   "0x89610846daDaB76A8b5b2dB0a4D33d743Bce4D43", // CHRONOBAR
   "0xF2001B145b43032AAF5Ee2884e456CCd805F677D", // DAI
@@ -78,7 +78,7 @@ export function findBnbPerToken(token: Token): BigDecimal {
   log.info('############### findBnbPerToken param <{}:{}> \n', 
   [token.id, CNO_ADDRESS]);
 
-  if (CNO_ADDRESS.toLowerCase() == token.id.toLowerCase()) {
+  if (CNO_ADDRESS == token.id) {
   // if (token.id.toString().trim() === CNO_ADDRESS.toString().trim()) {
     log.info('++++++++++++++++++++ CNO Token Price is 1 +++++++++++++++++++++++ {}\n\n', ['']);
     return ONE_BD;
