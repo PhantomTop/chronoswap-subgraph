@@ -57,8 +57,8 @@ export function getBnbPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  "0xca2503482e5D6D762b524978f400f03E38d5F962", // WCRO
   "0x322e21dcAcE43d319646756656b29976291d7C76", // CNO
+  "0xca2503482e5D6D762b524978f400f03E38d5F962", // WCRO
   "0x89610846daDaB76A8b5b2dB0a4D33d743Bce4D43", // CHRONOBAR
   "0xF2001B145b43032AAF5Ee2884e456CCd805F677D", // DAI
   "0xc21223249CA28397B4B6541dfFaEcC539BfF0c59", // USDC
