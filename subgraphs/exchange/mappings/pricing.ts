@@ -75,8 +75,10 @@ let MINIMUM_LIQUIDITY_THRESHOLD_BNB = BigDecimal.fromString("10");
  * @todo update to be derived BNB (add stablecoin estimates)
  **/
 export function findBnbPerToken(token: Token): BigDecimal {
-  log.info('############### findBnbPerToken param :{} == {} \n', 
-  [token.id, CNO_ADDRESS]);
+  log.info('############### findBnbPerToken param :{} == {}, {} \n', 
+  [token.id, CNO_ADDRESS,
+    CNO_ADDRESS.indexOf(token.id).toString()
+  ]);
 
   if (CNO_ADDRESS.indexOf(token.id) == 0) {
   // if (token.id.toString().trim() === CNO_ADDRESS.toString().trim()) {
