@@ -16,20 +16,14 @@ export function getBnbPriceInUSD(): BigDecimal {
   let usdtPair = Pair.load(USDT_CNO_PAIR); // usdt is token0
   let usdcPair = Pair.load(USDC_CNO_PAIR); // usdc is token1
 
-  // log.info('---------------usdtPair {} : {}\n', 
-  //   [usdtPair.reserve0.toString(), usdtPair.reserve1.toString()]);
-  // log.info('---------------usdcPair {} : {}\n', 
-  //   [usdcPair.reserve0.toString(), usdcPair.reserve1.toString()]);
-
   if (usdcPair !== null && usdtPair !== null) {
-    
     let totalLiquidityBNB = usdcPair.reserve0.plus(usdtPair.reserve1);
     if (totalLiquidityBNB.notEqual(ZERO_BD)) {
       let usdcWeight = usdcPair.reserve0.div(totalLiquidityBNB);
       let usdtWeight = usdtPair.reserve1.div(totalLiquidityBNB);
 
-      log.info('---------------usdcWeight {} usdtWeight {}, ret {}\n', 
-      [usdcWeight.toString(), usdtWeight.toString(), ( usdcPair.token1Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight)) ).toString()]);
+      //log.info('---------------usdcWeight {} usdtWeight {}, ret {}\n', 
+      //[usdcWeight.toString(), usdtWeight.toString(), ( usdcPair.token1Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight)) ).toString()]);
 
       return usdcPair.token1Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight));
     } else {
@@ -57,7 +51,7 @@ export function getBnbPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  "0x322e21dcace43d319646756656b29976291d7c76", // CNO
+  "0x322e21dcace43d319646756656b29976291d7c76", // CNO : must lower case
   "0xca2503482e5D6D762b524978f400f03E38d5F962", // WCRO
   "0x89610846daDaB76A8b5b2dB0a4D33d743Bce4D43", // CHRONOBAR
   "0xF2001B145b43032AAF5Ee2884e456CCd805F677D", // DAI
@@ -75,45 +69,44 @@ let MINIMUM_LIQUIDITY_THRESHOLD_BNB = BigDecimal.fromString("10");
  * @todo update to be derived BNB (add stablecoin estimates)
  **/
 export function findBnbPerToken(token: Token): BigDecimal {
-  log.info('############### findBnbPerToken param <{}:{}> \n', 
-  [token.id, CNO_ADDRESS]);
+  //log.info('############### findBnbPerToken param <{}:{}> \n', 
+  //[token.id, CNO_ADDRESS]);
 
   if (CNO_ADDRESS == token.id) {
-  // if (token.id.toString().trim() === CNO_ADDRESS.toString().trim()) {
-    log.info('++++++++++++++++++++ CNO Token Price is 1 +++++++++++++++++++++++ {}\n\n', ['']);
+    //log.info('++++++++++++++++++++ CNO Token Price is 1 +++++++++++++++++++++++ {}\n\n', ['']);
     return ONE_BD;
   }
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
     let pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
 
-    log.info('Check pair exists between {} -> {}\n', [token.id, WHITELIST[i]]);
+    //log.info('Check pair exists between {} -> {}\n', [token.id, WHITELIST[i]]);
     
     if (pairAddress.toHex() != ADDRESS_ZERO) {
       let pair = Pair.load(pairAddress.toHex());
       
-      log.info('===========Pair Information : {}===============\n', [pairAddress.toHex().toString()]);
-      log.info('token0 : {}\n token1 : {}\n reserve0: {}\n reserve1: {}\n totalSupply: {}\n reserveBNB: {}\n',
-       [pair.token0, pair.token1, pair.reserve0.toString(), pair.reserve1.toString(), pair.totalSupply.toString(), pair.reserveBNB.toString()]);
+      //log.info('===========Pair Information : {}===============\n', [pairAddress.toHex().toString()]);
+      //log.info('token0 : {}\n token1 : {}\n reserve0: {}\n reserve1: {}\n totalSupply: {}\n reserveBNB: {}\n',
+       //[pair.token0, pair.token1, pair.reserve0.toString(), pair.reserve1.toString(), pair.totalSupply.toString(), pair.reserveBNB.toString()]);
       
 
-      log.info('Pair Exists : {} reserveBNB : {}\n', [pairAddress.toHex(), pair.reserveBNB.toString()]);
+      //log.info('Pair Exists : {} reserveBNB : {}\n', [pairAddress.toHex(), pair.reserveBNB.toString()]);
       
-      //if (pair.token0 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
-      if (pair.token0 == token.id) {
+      if (pair.token0 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
+      //if (pair.token0 == token.id) {
         let token1 = Token.load(pair.token1);
         
-        log.info("Token price : {} * {} = {}\n", 
-        [pair.token1Price.toString(), token1.derivedBNB.toString(), pair.token1Price.times(token1.derivedBNB as BigDecimal).toString()]);
+        //log.info("Token price : {} * {} = {}\n", 
+        //[pair.token1Price.toString(), token1.derivedBNB.toString(), pair.token1Price.times(token1.derivedBNB as BigDecimal).toString()]);
         
         return pair.token1Price.times(token1.derivedBNB as BigDecimal); // return token1 per our token * BNB per token 1
       }
-      //if (pair.token1 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
-      if (pair.token1 == token.id) {
+      if (pair.token1 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
+      //if (pair.token1 == token.id) {
         let token0 = Token.load(pair.token0);
         
-        log.info("Token price : {} * {} = {}\n", 
-        [pair.token0Price.toString(), token0.derivedBNB.toString(), pair.token0Price.times(token0.derivedBNB as BigDecimal).toString()]);
+        //log.info("Token price : {} * {} = {}\n", 
+        //[pair.token0Price.toString(), token0.derivedBNB.toString(), pair.token0Price.times(token0.derivedBNB as BigDecimal).toString()]);
         
         return pair.token0Price.times(token0.derivedBNB as BigDecimal); // return token0 per our token * BNB per token 0
       }

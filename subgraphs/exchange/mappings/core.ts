@@ -189,17 +189,17 @@ export function handleSync(event: Sync): void {
   let t0DerivedBNB = findBnbPerToken(token0 as Token);
   token0.derivedBNB = t0DerivedBNB;
   token0.derivedUSD = t0DerivedBNB.times(bundle.bnbPrice);
-  if (t0DerivedBNB.notEqual(ZERO_BD)) {
-    log.info('+++++ t0DerivedBNB not zero : {}', [token0.derivedUSD.toString()]);
-  }
+//  if (t0DerivedBNB.notEqual(ZERO_BD)) {
+//    log.info('+++++ t0DerivedBNB not zero : {}', [token0.derivedUSD.toString()]);
+//  }
   token0.save();
 
   let t1DerivedBNB = findBnbPerToken(token1 as Token);
   token1.derivedBNB = t1DerivedBNB;
   token1.derivedUSD = t1DerivedBNB.times(bundle.bnbPrice);
-  if (t0DerivedBNB.notEqual(ZERO_BD)) {
-    log.info('+++++ t1DerivedBNB not zero : {}', [token1.derivedUSD.toString()]);
-  }
+//  if (t0DerivedBNB.notEqual(ZERO_BD)) {
+//    log.info('+++++ t1DerivedBNB not zero : {}', [token1.derivedUSD.toString()]);
+//  }
 
   token1.save();
 
@@ -213,7 +213,7 @@ export function handleSync(event: Sync): void {
       pair.reserve1,
       token1 as Token
     ).div(bundle.bnbPrice);
-    log.info('+++++ core.ts: trackedLiquidityBNB {}\n', [trackedLiquidityBNB.toString()]);
+//    log.info('+++++ core.ts: trackedLiquidityBNB {}\n', [trackedLiquidityBNB.toString()]);
   } else {
     trackedLiquidityBNB = ZERO_BD;
   }

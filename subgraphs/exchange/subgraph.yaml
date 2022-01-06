@@ -49,7 +49,7 @@ templates:
         - name: Factory
           file: ./abis/Factory.json
         - name: Pair
-          file: ./abis/Pair.json
+          file: ./abis/IUniswapV2Pair.json
       eventHandlers:
         - event: Mint(indexed address,uint256,uint256)
           handler: handleMint
