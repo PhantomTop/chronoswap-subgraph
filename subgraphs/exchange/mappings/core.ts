@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { BigInt, BigDecimal, store } from "@graphprotocol/graph-ts";
+import { BigInt, BigDecimal, store, log } from "@graphprotocol/graph-ts";
 import {
   Pair,
   Token,
@@ -189,11 +189,18 @@ export function handleSync(event: Sync): void {
   let t0DerivedBNB = findBnbPerToken(token0 as Token);
   token0.derivedBNB = t0DerivedBNB;
   token0.derivedUSD = t0DerivedBNB.times(bundle.bnbPrice);
+  if (t0DerivedBNB.notEqual(ZERO_BD)) {
+    log.info('+++++ t0DerivedBNB not zero : {}', [token0.derivedUSD.toString()]);
+  }
   token0.save();
 
   let t1DerivedBNB = findBnbPerToken(token1 as Token);
   token1.derivedBNB = t1DerivedBNB;
   token1.derivedUSD = t1DerivedBNB.times(bundle.bnbPrice);
+  if (t0DerivedBNB.notEqual(ZERO_BD)) {
+    log.info('+++++ t1DerivedBNB not zero : {}', [token1.derivedUSD.toString()]);
+  }
+
   token1.save();
 
   // get tracked liquidity - will be 0 if neither is in whitelist
@@ -206,6 +213,7 @@ export function handleSync(event: Sync): void {
       pair.reserve1,
       token1 as Token
     ).div(bundle.bnbPrice);
+    log.info('+++++ core.ts: trackedLiquidityBNB {}\n', [trackedLiquidityBNB.toString()]);
   } else {
     trackedLiquidityBNB = ZERO_BD;
   }
