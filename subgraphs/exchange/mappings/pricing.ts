@@ -78,7 +78,7 @@ export function findBnbPerToken(token: Token): BigDecimal {
   log.info('############### findBnbPerToken param <{}:{}> \n', 
   [token.id, CNO_ADDRESS]);
 
-  if (CNO_ADDRESS.indexOf(token.id) == 0) {
+  if (CNO_ADDRESS.toLowerCase() == token.id.toLowerCase()) {
   // if (token.id.toString().trim() === CNO_ADDRESS.toString().trim()) {
     log.info('++++++++++++++++++++ CNO Token Price is 1 +++++++++++++++++++++++ {}\n\n', ['']);
     return ONE_BD;
