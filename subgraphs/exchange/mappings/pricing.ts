@@ -52,13 +52,13 @@ export function getBnbPriceInUSD(): BigDecimal {
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
   "0x322e21dcace43d319646756656b29976291d7c76", // CNO : must lower case
-  "0xca2503482e5D6D762b524978f400f03E38d5F962", // WCRO
-  "0x89610846daDaB76A8b5b2dB0a4D33d743Bce4D43", // CHRONOBAR
-  "0xF2001B145b43032AAF5Ee2884e456CCd805F677D", // DAI
-  "0xc21223249CA28397B4B6541dfFaEcC539BfF0c59", // USDC
-  "0x66e428c3f67a68878562e79A0234c1F83c208770", // USDT
-  "0xB888d8Dd1733d72681b30c00ee76BDE93ae7aa93", // ATOM
-  "0x1a8E39ae59e5556B56b76fCBA98d22c9ae557396" // DOGE
+  "0xca2503482e5d6d762b524978f400f03e38d5f962", // WCRO
+  "0x89610846dadab76a8b5b2db0a4d33d743bce4d43", // CHRONOBAR
+  "0xf2001b145b43032aaf5ee2884e456ccd805f677d", // DAI
+  "0xc21223249ca28397b4b6541dffaecc539bff0c59", // USDC
+  "0x66e428c3f67a68878562e79a0234c1f83c208770", // USDT
+  "0xb888d8dd1733d72681b30c00ee76bde93ae7aa93", // ATOM
+  "0x1a8e39ae59e5556b56b76fcba98d22c9ae557396" // DOGE
 ];
 
 // minimum liquidity for price to get tracked
