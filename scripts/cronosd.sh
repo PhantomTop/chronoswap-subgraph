@@ -3,7 +3,7 @@
 systemctl stop cronosd.service
 cronosd unsafe-reset-all
 rm ~/.cronos/config/genesis.json
-cronosd init chronoswap-asia-1 --chain-id cronosmainnet_25-1
+cronosd init chronoswap-graphnode-1 --chain-id cronosmainnet_25-1
 curl https://raw.githubusercontent.com/crypto-org-chain/cronos-mainnet/master/cronosmainnet_25-1/genesis.json > ~/.cronos/config/genesis.json
 sed -i.bak -E 's#^(minimum-gas-prices[[:space:]]+=[[:space:]]+).*$#\1"5000000000000basecro"#' ~/.cronos/config/app.toml
 
